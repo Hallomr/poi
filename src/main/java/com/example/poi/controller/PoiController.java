@@ -28,10 +28,12 @@ public class PoiController {
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-            String fileName = URLEncoder.encode("模板", "UTF-8");
+            String fileName = URLEncoder.encode("导出", "UTF-8");
             response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+
             QueryWrapper<Route> routeQueryWrapper = new QueryWrapper<Route>();
             List<Route> routes = routeMapper.selectList(routeQueryWrapper);
+
             ExcelUtils.export(response.getOutputStream(),routes,RoutingExcelDto.class);
         } catch (Exception e) {
             e.printStackTrace();

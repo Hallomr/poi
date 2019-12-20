@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class ExcelUtils {
-
+    private static  final String pattern ="yyyy-MM-dd HH:mm:ss";
     /**
      * 解析数据，将inputStream转为List
      *
@@ -22,7 +22,7 @@ public class ExcelUtils {
      * @return
      * @throws Exception
      */
-    public static <T> List<T> parse(InputStream excel, Class<T> clazz) throws Exception {
+    public static<T> List<T> parse(InputStream excel, Class<T> clazz) throws Exception {
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(excel);
         XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
         XSSFRow titleCell = xssfSheet.getRow(0);
@@ -122,6 +122,7 @@ public class ExcelUtils {
                 if (String.class.equals(field.getType())) {
                     cell.setCellValue((String) property);
                 } else if (Date.class.equals(field.getType())) {
+                    cell.getCellStyle().setDataFormat(wb.createDataFormat().getFormat(pattern));
                     cell.setCellValue((Date) property);
                 }else if(Integer.class.equals(field.getType())){
                     cell.setCellValue((Integer)property);

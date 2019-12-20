@@ -1,5 +1,7 @@
 package com.example.poi.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -8,8 +10,8 @@ import java.util.Date;
 @Data
 @TableName(value ="route" )
 public class Route {
-    /*@TableId(type = IdType.AUTO)
-    private Integer id;*/
+    @TableId(type = IdType.AUTO)
+    private Integer id;
     /*服务编号*/
     private String serviceCode;
     /*服务名称*/
