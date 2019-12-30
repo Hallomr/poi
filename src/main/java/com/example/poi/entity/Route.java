@@ -8,10 +8,11 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName(value ="route" )
+@TableName(value ="route")
 public class Route {
     @TableId(type = IdType.AUTO)
     private Integer id;
+
     /*服务编号*/
     private String serviceCode;
     /*服务名称*/

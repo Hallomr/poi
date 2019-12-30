@@ -5,15 +5,16 @@ import com.example.poi.entity.Route;
 import com.example.poi.mapper.RouteMapper;
 import com.example.poi.utils.ExcelUtils;
 import com.example.poi.vo.RoutingExcelDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/poi")
@@ -38,5 +39,21 @@ public class PoiController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @PostMapping("/upload")
+    public String upload(MultipartFile file) throws IOException {
+        try {
+            List<RoutingExcelDto> parse = ExcelUtils.parse(file.getInputStream(), RoutingExcelDto.class);
+            //入数据库
+            List<Route> collect = parse.stream().map(routingExcelDto -> {
+                Route route = new Route();
+                BeanUtils.copyProperties(routingExcelDto, route);
+                return route;
+            }).collect(Collectors.toList());
+            System.out.println(collect);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "success";
     }
 }

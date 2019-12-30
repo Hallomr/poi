@@ -28,6 +28,7 @@ public class ExcelUtils {
         XSSFRow titleCell = xssfSheet.getRow(0);
         List<T> dataList = new ArrayList<>(xssfSheet.getLastRowNum());
         T datum;
+
         Map<String, Field> fieldMap = getFieldMap(clazz);
         for (int i = 1; i <= xssfSheet.getLastRowNum(); i++) {
             XSSFRow xssfRow = xssfSheet.getRow(i);
@@ -55,6 +56,9 @@ public class ExcelUtils {
                     value = cell.getStringCellValue();
                 } else if (type.equals(Date.class)) {
                     value = cell.getDateCellValue();
+                }else if(type.equals(Integer.class)){
+                    cell.setCellValue(Cell.CELL_TYPE_NUMERIC);
+                    value = (int)cell.getNumericCellValue();
                 }
                 PropertyUtils.setProperty(datum, field.getName(), value);
             }
