@@ -1,10 +1,13 @@
 package com.example.poi.utils;
 
+import javax.sql.DataSource;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.logging.Logger;
 
-public class ConnectionPool {
+public class ConnectionPool implements DataSource {
    private static LinkedList<Connection> linkedList = new LinkedList<>();
 
     public ConnectionPool() throws Exception {
@@ -33,14 +36,14 @@ public class ConnectionPool {
     }
     public static void main(String[] args) {
         try {
-            new ConnectionPool();
+            ConnectionPool connectionPool = new ConnectionPool();
             System.out.println(getSize());
-            Connection connection = getConnection(username, password, url);
-            Connection connection1 = getConnection(username, password, url);
-            Connection connection2 = getConnection(username, password, url);
-            Connection connection3 = getConnection(username, password, url);
-            Connection connection4 = getConnection(username, password, url);
-            Connection connection5 =  getConnection(username, password, url);
+            Connection connection = connectionPool.getConnection();
+            Connection connection1 = connectionPool.getConnection();
+            Connection connection2 = connectionPool.getConnection();
+            Connection connection3 = connectionPool.getConnection();
+            Connection connection4 = connectionPool.getConnection();
+            Connection connection5 =  connectionPool.getConnection();
             connection.close();
             connection1.close();
             connection2.close();
@@ -71,14 +74,59 @@ public class ConnectionPool {
         }
     }
 
-    private static Connection getConnection(String username, String password, String url) throws SQLException {
+   /* private static Connection getConnection(String username, String password, String url) throws SQLException {
+
+    }*/
+
+    private static int getSize(){
+        return linkedList.size();
+    }
+
+    @Override
+    public Connection getConnection() throws SQLException {
         if(linkedList.size()>0){
             return linkedList.removeFirst();
         }
         return DriverManager.getConnection(url, username, password);
     }
 
-    private static int getSize(){
-        return linkedList.size();
+    @Override
+    public Connection getConnection(String username, String password) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public PrintWriter getLogWriter() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public void setLogWriter(PrintWriter out) throws SQLException {
+
+    }
+
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException {
+
+    }
+
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        return 0;
+    }
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return null;
     }
 }
