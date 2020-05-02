@@ -8,6 +8,7 @@ import com.example.poi.mapper.DepartmentMapper;
 import com.example.poi.mapper.RouteMapper;
 import com.example.poi.mapper.UserMapper;
 import com.example.poi.resp.DepartmentResp;
+import com.example.poi.service.RouteService;
 import com.example.poi.utils.ExcelUtils;
 import com.example.poi.vo.RoutingExcelDto;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,9 @@ public class PoiController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RouteService routeService;
+
     @GetMapping("/download")
     public void download(HttpServletResponse response){
         try {
@@ -55,6 +59,23 @@ public class PoiController {
             e.printStackTrace();
         }
     }
+
+    @GetMapping("/export")
+    public void export(HttpServletResponse response){
+        try {
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+            String fileName = URLEncoder.encode("导出", "UTF-8");
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+            QueryWrapper<Route> routeQueryWrapper = new QueryWrapper<Route>();
+            List<Route> routes = routeMapper.selectList(routeQueryWrapper);
+            routeService.export(response.getOutputStream(),routes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @PostMapping("/upload")
     public String upload(MultipartFile file) throws IOException {
         try {
@@ -71,6 +92,8 @@ public class PoiController {
         }
         return "success";
     }
+
+
 
     @GetMapping("/getUsers")
     public List getAllDepartment(){
