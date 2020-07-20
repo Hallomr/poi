@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -109,5 +110,16 @@ public class ReflectApplicationTests {
         Method test = c.getDeclaredMethod("test", String.class);
         test.setAccessible(true);
         test.invoke(reflectVo, "this is test");
+    }
+
+    @Test
+    public void test8() throws Exception {
+        PropertyDescriptor propertyDescriptor = new PropertyDescriptor("name",User.class);
+        Method writeMethod = propertyDescriptor.getWriteMethod();
+        User user = new User();
+        writeMethod.invoke(user,"cbj");
+        Method readMethod = propertyDescriptor.getReadMethod();
+        Object name = readMethod.invoke(user);
+        System.out.println(name);
     }
 }
