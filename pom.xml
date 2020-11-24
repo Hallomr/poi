@@ -33,14 +33,19 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.6</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.6</version>
+            <version>4.1.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>4.1.2</version>
+        </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -83,7 +88,39 @@
             <artifactId>spring-boot-starter-redis</artifactId>
             <version>1.4.0.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.deepoove</groupId>
+            <artifactId>poi-tl</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
+
+        <!--<dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.pdf</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.pdf.free</artifactId>
+            <version>2.6.3</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.66</version>
+        </dependency>
     </dependencies>
+
+   <!-- <repositories>
+        <repository>
+            <id>com.e-iceblue</id>
+            <url>http://repo.e-iceblue.cn/repository/maven-public/</url>
+        </repository>
+    </repositories>-->
 
     <build>
         <plugins>
@@ -94,4 +131,23 @@
         </plugins>
     </build>
 
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <!--默认激活-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 </project>

@@ -3,7 +3,7 @@ package com.example.poi.utils;
 import com.example.poi.annotation.ExcelTag;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.InputStream;
@@ -52,12 +52,12 @@ public class ExcelUtils {
                     continue;
                 }
                 if (type.equals(String.class)) {
-                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    cell.setCellType(CellType.STRING);
                     value = cell.getStringCellValue();
                 } else if (type.equals(Date.class)) {
                     value = cell.getDateCellValue();
                 }else if(type.equals(Integer.class)){
-                    cell.setCellValue(Cell.CELL_TYPE_NUMERIC);
+                    cell.setCellType(CellType.NUMERIC);
                     value = (int)cell.getNumericCellValue();
                 }
                 PropertyUtils.setProperty(datum, field.getName(), value);
@@ -97,9 +97,9 @@ public class ExcelUtils {
         XSSFRow headers = sheet.createRow(0);
         for (int index = 0; index < fields.length; index++) {
             Field field = fields[index];
-            int type = 0;
+            CellType type = CellType.NUMERIC;
             if (String.class.equals(field.getType())) {
-                type = Cell.CELL_TYPE_STRING;
+                type = CellType.STRING;
             }
             ExcelTag excelTag = field.getAnnotation(ExcelTag.class);
             XSSFCell cell = headers.createCell(index, type);
@@ -119,7 +119,7 @@ public class ExcelUtils {
             row = sheet.createRow(i + 1);
             for (int index = 0; index < fields.length; index++) {
                 field = fields[index];
-                int type = 0;
+                CellType type = CellType.NUMERIC;
                 XSSFCell cell = row.createCell(index, type);
                 cell.setCellStyle(wb.createCellStyle());
                 Object property = PropertyUtils.getProperty(datum, field.getName());
