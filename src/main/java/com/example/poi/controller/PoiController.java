@@ -1,6 +1,8 @@
 package com.example.poi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.poi.annotation.LoginAnno;
+import com.example.poi.annotation.Mylog;
 import com.example.poi.entity.Department;
 import com.example.poi.entity.Route;
 import com.example.poi.entity.User;
@@ -25,7 +27,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@LoginAnno
 @RestController
 @RequestMapping("/poi")
 public class PoiController {
@@ -96,6 +98,7 @@ public class PoiController {
 
 
     @GetMapping("/getUsers")
+    @Mylog
     public List getAllDepartment(){
         QueryWrapper<Department> queryWrapper = new QueryWrapper<Department>().eq("parent_id",0);
         List<Department> departments = departmentMapper.selectList(queryWrapper);
